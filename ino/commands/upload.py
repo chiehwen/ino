@@ -46,7 +46,7 @@ class Upload(Command):
         else:
             self.e.find_arduino_tool('avrdude', ['hardware', 'tools', 'avr', 'bin'])
             self.e.find_arduino_file('avrdude.conf', ['hardware', 'tools', 'avr', 'etc'])
-    
+
     def run(self, args):
         self.discover()
         port = args.serial_port or self.e.guess_serial_port()
@@ -62,7 +62,7 @@ class Upload(Command):
             raise Abort("%s doesn't exist. Is Arduino connected?" % port)
 
         # send a hangup signal when the last process closes the tty
-        file_switch = '-f' if platform.system() == 'Darwin' else '-F'
+        file_switch = '-F' if platform.system() == 'Darwin' else '-f'
         ret = subprocess.call([self.e['stty'], file_switch, port, 'hupcl'])
         if ret:
             raise Abort("stty failed")
